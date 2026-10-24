@@ -1,0 +1,20 @@
+{
+  "train_seed": 42,
+  "policy": "MlpPolicy",
+  "n_steps": 256,
+  "batch_size": 64,
+  "learning_rate": 0.0003,
+  "total_timesteps": 20000,
+  "device": "cpu",
+  "torch_threads": 1,
+  "train_env": "RoutingEnv(poison=False)  # clean observations only",
+  "param_sha256": "b67fe65694b9e2360985cf277af8c543a20b744451ef415773663d10581b4d79",
+  "train_wall_seconds": 29.4,
+  "versions": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu128",
+    "stable_baselines3": "2.9.0",
+    "gymnasium": "1.4.0",
+    "numpy": "2.5.2"
+  }
+}

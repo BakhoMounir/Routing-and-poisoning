@@ -1,0 +1,45 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.17, pytest-9.1.1, pluggy-1.7.0 -- /usr/local/bin/python3
+rootdir: /home/claude/routing-poisoning-phase1
+plugins: platformdirs-4.12.4, anyio-4.15.1
+collecting ... collected 37 items
+
+tests/test_env_equivalence.py::test_observations_rewards_and_info_identical_to_original[False-0.25] PASSED [  2%]
+tests/test_env_equivalence.py::test_observations_rewards_and_info_identical_to_original[True-0.1] PASSED [  5%]
+tests/test_env_equivalence.py::test_observations_rewards_and_info_identical_to_original[True-0.25] PASSED [  8%]
+tests/test_env_equivalence.py::test_observations_rewards_and_info_identical_to_original[True-0.5] PASSED [ 10%]
+tests/test_env_equivalence.py::test_shortest_path_reproduces_original_results_csv PASSED [ 13%]
+tests/test_env_equivalence.py::test_original_csv_internal_consistency PASSED [ 16%]
+tests/test_poisoning.py::test_zero_delta_poison_reproduces_clean_exactly PASSED [ 18%]
+tests/test_poisoning.py::test_only_targeted_entries_change[0.1] PASSED   [ 21%]
+tests/test_poisoning.py::test_only_targeted_entries_change[0.25] PASSED  [ 24%]
+tests/test_poisoning.py::test_only_targeted_entries_change[0.5] PASSED   [ 27%]
+tests/test_poisoning.py::test_only_targeted_entries_change[1.0] PASSED   [ 29%]
+tests/test_poisoning.py::test_actual_perturbation_matches_configured_strength[0.1] PASSED [ 32%]
+tests/test_poisoning.py::test_actual_perturbation_matches_configured_strength[0.25] PASSED [ 35%]
+tests/test_poisoning.py::test_actual_perturbation_matches_configured_strength[0.5] PASSED [ 37%]
+tests/test_poisoning.py::test_actual_perturbation_matches_configured_strength[1.0] PASSED [ 40%]
+tests/test_poisoning.py::test_saturated_link_makes_poison_a_noop PASSED  [ 43%]
+tests/test_poisoning.py::test_observation_bounds_dtype_and_finiteness[-0.3] PASSED [ 45%]
+tests/test_poisoning.py::test_observation_bounds_dtype_and_finiteness[0.0] PASSED [ 48%]
+tests/test_poisoning.py::test_observation_bounds_dtype_and_finiteness[0.1] PASSED [ 51%]
+tests/test_poisoning.py::test_observation_bounds_dtype_and_finiteness[0.25] PASSED [ 54%]
+tests/test_poisoning.py::test_observation_bounds_dtype_and_finiteness[0.5] PASSED [ 56%]
+tests/test_poisoning.py::test_observation_bounds_dtype_and_finiteness[1.0] PASSED [ 59%]
+tests/test_poisoning.py::test_observation_bounds_dtype_and_finiteness[5.0] PASSED [ 62%]
+tests/test_poisoning.py::test_poisoning_does_not_alter_true_network_state_or_reward PASSED [ 64%]
+tests/test_poisoning.py::test_reproducible_under_fixed_seed_and_distinct_across_seeds PASSED [ 67%]
+tests/test_poisoning.py::test_counterfactual_observation_matches_poisoned_environment[0.1] PASSED [ 70%]
+tests/test_poisoning.py::test_counterfactual_observation_matches_poisoned_environment[0.25] PASSED [ 72%]
+tests/test_poisoning.py::test_counterfactual_observation_matches_poisoned_environment[0.5] PASSED [ 75%]
+tests/test_poisoning.py::test_counterfactual_observation_matches_poisoned_environment[1.0] PASSED [ 78%]
+tests/test_poisoning.py::test_invalid_configuration_and_actions_fail_loudly PASSED [ 81%]
+tests/test_poisoning.py::test_flip_measurement_pipeline_detects_sensitive_policy_and_not_constant_one PASSED [ 83%]
+tests/test_policies_metrics.py::test_shortest_path_is_independent_of_poisoning PASSED [ 86%]
+tests/test_policies_metrics.py::test_shortest_path_candidate_zero_is_a_minimum_hop_path PASSED [ 89%]
+tests/test_policies_metrics.py::test_greedy_telemetry_baseline_does_read_the_poisoned_observation PASSED [ 91%]
+tests/test_policies_metrics.py::test_metric_definitions_are_consistent_with_true_state PASSED [ 94%]
+tests/test_policies_metrics.py::test_trained_model_is_deterministic_and_actions_valid PASSED [ 97%]
+tests/test_policies_metrics.py::test_training_is_bitwise_repeatable_on_cpu_single_thread PASSED [100%]
+
+======================== 37 passed in 64.68s (0:01:04) =========================

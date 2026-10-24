@@ -1,0 +1,12 @@
+reference policies done (10s)
+model 42 done (24s)
+model 43 done (36s)
+model 44 done (48s)
+model 45 done (59s)
+model 46 done (71s)
+model 47 done (83s)
+model 48 done (95s)
+model 49 done (106s)
+model 50 done (118s)
+model 51 done (130s)
+wrote 6000 rows -> /home/claude/routing-poisoning-phase1/results/episodes.csv in 130s

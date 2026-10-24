@@ -1,0 +1,11 @@
+# Versions below are those actually used to produce results/ (Python 3.13.17, Linux, CPU).
+# Other versions are untested.
+torch==2.14.1
+stable-baselines3==2.9.0
+gymnasium==1.4.0
+networkx==3.7
+numpy==2.5.3
+pandas==3.0.5
+scipy==1.18.1
+matplotlib==3.11.2
+pytest==9.1.1

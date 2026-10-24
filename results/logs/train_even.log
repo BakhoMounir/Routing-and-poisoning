@@ -1,0 +1,5 @@
+trained seed=42 in 28.9s -> /home/claude/routing-poisoning-phase1/results/models/ppo_seed42.zip
+trained seed=44 in 28.1s -> /home/claude/routing-poisoning-phase1/results/models/ppo_seed44.zip
+trained seed=46 in 32.9s -> /home/claude/routing-poisoning-phase1/results/models/ppo_seed46.zip
+trained seed=48 in 28.8s -> /home/claude/routing-poisoning-phase1/results/models/ppo_seed48.zip
+trained seed=50 in 29.2s -> /home/claude/routing-poisoning-phase1/results/models/ppo_seed50.zip

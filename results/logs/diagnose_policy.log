@@ -1,0 +1,21 @@
+ train_seed  n_decisions  frac_action0  abl_all_util  abl_poisoned_links  abl_other_links  exposure_chosen  exposure_any_candidate  poison_at_max
+         42         2000         0.987         0.081               0.004            0.042            0.246                    0.65          0.022
+         43         2000         0.864         0.179               0.026            0.256            0.228                    0.65          0.012
+         44         2000         0.568         0.282               0.070            0.360            0.262                    0.65          0.008
+         45         2000         0.909         0.249               0.036            0.394            0.224                    0.65          0.010
+         46         2000         0.744         0.087               0.023            0.073            0.255                    0.65          0.022
+         47         2000         0.879         0.114               0.008            0.105            0.220                    0.65          0.002
+         48         2000         0.673         0.172               0.110            0.092            0.249                    0.65          0.018
+         49         2000         0.866         0.176               0.016            0.207            0.220                    0.65          0.009
+         50         2000         0.842         0.202               0.062            0.344            0.206                    0.65          0.013
+         51         2000         0.930         0.258               0.007            0.240            0.222                    0.65          0.007
+
+mean across models:
+ n_decisions               2000.000
+frac_action0                 0.826
+abl_all_util                 0.180
+abl_poisoned_links           0.036
+abl_other_links              0.211
+exposure_chosen              0.233
+exposure_any_candidate       0.650
+poison_at_max                0.012
