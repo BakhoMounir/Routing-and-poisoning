@@ -1,0 +1,71 @@
+{
+  "name": "x_01_check_env_and_checkpoints",
+  "status": "completed",
+  "started_utc": "2026-10-27T14:32:31+00:00",
+  "config_path": "/media/bakhom/New Volume/Research/RL_Sec/practical/p2x_overlay/configs/x_experiments.json",
+  "config_sha256": "2c2a530d649f947b791d33c7c0de58ad9da0e138e9532ca159cf1b24e7eb34ec",
+  "args": {
+    "config": "/media/bakhom/New Volume/Research/RL_Sec/practical/p2x_overlay/configs/x_experiments.json",
+    "out": null,
+    "overwrite": false,
+    "verbose": false,
+    "models_dir": "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models",
+    "agents": [
+      "replace",
+      "enhance"
+    ],
+    "seeds": null,
+    "hash_only": false
+  },
+  "seeds": {
+    "integrity_val": "val_selection_v1"
+  },
+  "git": null,
+  "code_tree_sha256": "fa242c13793364c1c24c61ef9bb5414cbc2b502144471216a961c5a48b7843f4",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "torch": "2.11.0+cu128",
+    "stable-baselines3": "2.9.0",
+    "gymnasium": "1.4.0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "networkx": "3.6.1",
+    "matplotlib": "3.11.2",
+    "pytest": "8.4.2"
+  },
+  "inputs": {
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed42/meta.json": "be1a5b81af671e56abbf9cc07f2eca78aa37b27c1f06792654be254e5c9921f0",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed43/meta.json": "0d9f6b52559f59557392f86510e53c8acb401c8f2b1b01c80fcde518ec99048f",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed44/meta.json": "81c73ea6c9a9330b7358506e44d3ce1a1cb7418e779343a9bf6694e606e361d3",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed45/meta.json": "19b6e017eb6162f8cee8786e05885a05cc4e65cbe18004b9e9518008bc570cec",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed46/meta.json": "defdee28273eb287a09e3afc3d1f0d1fd43f5afb3956b7f9ab7057b930323ec1",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed47/meta.json": "82814f9bf5a76a0c65f078d53d79e9dcf2e6e50d6d5dc146bdc56afad97b1a43",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed48/meta.json": "088e2908fee833e319262edae015f17174906085cf33bc053b0d23c5ddc07db7",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed49/meta.json": "bf31001eb623bfba357e3e3423f8e615920c1dc90177137b3c05cbbf7ecc90f7",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed50/meta.json": "c7f1b474c8262e75f344e91f6910c696fa5652c7eb57f1d7a82283955f7113fe",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/replace/seed51/meta.json": "665051a151652cc3b3a280d8060ebda759ac8a6d0d1374089ef49fe15dec89e0",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed42/meta.json": "e506b7a2dbd89f8a63acabd0ab6eaaba14fc321759b19ddb9fea9c6754420528",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed43/meta.json": "4fe6469042f35667acccab0e78c9f5272dc9a01441898066ce9aa4af79714b84",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed44/meta.json": "298a9784ac376a887ee8e2ca4dbf81392bc75b826abca78d21dd0f1494f069a5",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed45/meta.json": "fc7019f99047b23a510f56161589d0ca60491ce7ba33023bcd59021ffe5a6f18",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed46/meta.json": "b1b0b3112472832cef9cd1ea628223ed47d17c2e3e9d60d5c8c46d6cf26b33e5",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed47/meta.json": "889b498b4743242cb5a66bf82e645039f9ba2c00f164dee6e51e0f7e90f6c8bb",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed48/meta.json": "6054c2fab7eb6d12204ab35ba5f05968f2628d1abc7ed7b3d504d1805900700c",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed49/meta.json": "e18cf7db792d1d122662583726d7c4ffa823abebb1f9f2d176fa0b1615e4fca0",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed50/meta.json": "8690d66a2d285f52eae75c9bcc67dde18da0630fc2bb70d736077870ede2c0ad",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models/enhance/seed51/meta.json": "37d068d8bdfda1f425c78f4cfa0e7d4a78a12a4f193519aee538940768d612f9"
+  },
+  "outputs": {
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/v2/env_check/checkpoint_integrity.csv": "3ec3b2168acc49aba757f592f4da305e7d19b0b7caae70dad6454a60c5e4eb55"
+  },
+  "extra": {
+    "topology_sha256": "fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e",
+    "version_issues": [],
+    "n_checkpoints": 20,
+    "n_diverging": 0
+  },
+  "wall_s": 59.1,
+  "finished_utc": "2026-10-27T14:33:30+00:00"
+}

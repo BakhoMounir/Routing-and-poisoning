@@ -1,0 +1,51 @@
+{
+  "name": "x_02_diag_checkpoints",
+  "status": "completed",
+  "started_utc": "2026-10-27T14:34:17+00:00",
+  "config_path": "/media/bakhom/New Volume/Research/RL_Sec/practical/p2x_overlay/configs/x_experiments.json",
+  "config_sha256": "2c2a530d649f947b791d33c7c0de58ad9da0e138e9532ca159cf1b24e7eb34ec",
+  "args": {
+    "config": "/media/bakhom/New Volume/Research/RL_Sec/practical/p2x_overlay/configs/x_experiments.json",
+    "out": null,
+    "overwrite": false,
+    "verbose": false,
+    "agent": "replace",
+    "models_dir": "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/models",
+    "seeds": null,
+    "ckpts": [
+      "best",
+      "final"
+    ],
+    "n_per_load": null,
+    "boot": 2000
+  },
+  "seeds": {
+    "scenarios": "val_v2[0:50) x loads [1.0, 1.5, 2.0, 3.0]"
+  },
+  "git": null,
+  "code_tree_sha256": "fa242c13793364c1c24c61ef9bb5414cbc2b502144471216a961c5a48b7843f4",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "torch": "2.11.0+cu128",
+    "stable-baselines3": "2.9.0",
+    "gymnasium": "1.4.0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "networkx": "3.6.1",
+    "matplotlib": "3.11.2",
+    "pytest": "8.4.2"
+  },
+  "inputs": {},
+  "outputs": {
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/v2/diag_checkpoints_replace/per_model.csv": "46a46ca578b1173e96bc7d3b95984da12fe9a2a2bf786865f743584b65667510",
+    "/media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/v2/diag_checkpoints_replace/summary.json": "a1e281c650830238c182d2dec8f1da96ec7f85ab128b4d74f4d06876aa2f4ad2"
+  },
+  "extra": {
+    "topology_sha256": "fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e",
+    "status_of_results": "EXPLORATORY"
+  },
+  "wall_s": 190.1,
+  "finished_utc": "2026-10-27T14:37:27+00:00"
+}

@@ -1,0 +1,34 @@
+{
+  "selected": {
+    "p": 1.0,
+    "floor": 0.1,
+    "infeasible_multiplier": 1.0
+  },
+  "selection_rule": "max mean accepted_offered_ratio on the SELECTION half (idx<n//2) of val_v2; ties -> smaller p, then smaller multiplier",
+  "n_per_load": 50,
+  "selection_half_means": {
+    "util_w_p0.5_m1": 0.9031461346011824,
+    "util_w_p0.5_m10": 0.9045594244968104,
+    "util_w_p1_m1": 0.9112694691953084,
+    "util_w_p1_m10": 0.9037726373260111,
+    "util_w_p2_m1": 0.8992523473606555,
+    "util_w_p2_m10": 0.8974812466636781,
+    "util_w_p4_m1": 0.8889586745732824,
+    "util_w_p4_m10": 0.8889586745732824
+  },
+  "full_set_means_optimistic": {
+    "minhop": 0.861783695412414,
+    "shortest_feasible": 0.9054786258490563,
+    "greedy_widest": 0.8961961699828107,
+    "shortest_feasible_k": 0.9070250047732316,
+    "unit_weight_dijkstra": 0.8629127644427763,
+    "util_w_p0.5_m1": 0.9028932496102978,
+    "util_w_p0.5_m10": 0.904693085399341,
+    "util_w_p1_m1": 0.9111680195469628,
+    "util_w_p1_m10": 0.9042729830909296,
+    "util_w_p2_m1": 0.9014850094861012,
+    "util_w_p2_m10": 0.8993238468682005,
+    "util_w_p4_m1": 0.8885125983535712,
+    "util_w_p4_m10": 0.8886319373355058
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "1.0": {
+    "frac_decisions_with_sf_path_in_K": 1.0,
+    "mean_extra_hops_vs_minhop": 0.011666666666666665
+  },
+  "1.5": {
+    "frac_decisions_with_sf_path_in_K": 0.9840000000000001,
+    "mean_extra_hops_vs_minhop": 0.14300000000000002
+  },
+  "2.0": {
+    "frac_decisions_with_sf_path_in_K": 0.9283333333333332,
+    "mean_extra_hops_vs_minhop": 0.425
+  },
+  "3.0": {
+    "frac_decisions_with_sf_path_in_K": 0.9003333333333333,
+    "mean_extra_hops_vs_minhop": 0.5640000000000001
+  }
+}

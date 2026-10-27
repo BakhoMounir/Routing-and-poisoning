@@ -1,0 +1,117 @@
+{
+ "_provenance": "Output of scripts/x_00_static_audit.py run on a tree rebuilt from the text-only audit dump (phase2_claude_audit_dump.txt). Binary/omitted files (figures PNG, episodes_clean.csv, TRAINING_DONE, NED, simulationResults.txt, tarball, model zips) were NOT available; the three figures/episodes/TRAINING_DONE entries were empty placeholders created from the dump's directory tree, so checks C03 and C14 reflect the directory listing / missing files, not file contents. Re-run on your real project directory: python scripts/x_00_static_audit.py",
+ "checks": [
+  {
+   "id": "C01",
+   "severity": "medium",
+   "status": "OK",
+   "title": "Test suite size matches the reported 23 passing tests",
+   "evidence": "21 test functions, 23 expanded cases; log reports '23 passed'. Not covered by any test (name absent from tests/test_phase2.py): ['eval_clean', 'analyze_clean', 'train_ppo', 'PPO.load', 'holm', 'bootstrap']. Logs are from the original sandbox; re-run locally."
+  },
+  {
+   "id": "C02",
+   "severity": "high",
+   "status": "CONFIRMED",
+   "title": "STATUS_AND_RESUME.md contradicts the artifacts on disk",
+   "evidence": "STATUS says ['UNFINISHED', 'NOT run', 'NOT written', 'not started']; disk has 10/10 enhance meta.json, episodes_clean.csv=True, TRAINING_DONE=True, figures=['fig_clean_comparison.png', 'fig_convergence.png'], reports/*.md=[]. Treat STATUS as superseded by docs/03_CURRENT_STATUS.md."
+  },
+  {
+   "id": "C03",
+   "severity": "low",
+   "status": "CONFIRMED",
+   "title": "NOT_INCLUDED.md says figures/tables do not exist",
+   "evidence": "claims empty figures/ and no clean tables; disk has 2 figures and episodes_clean.csv=True"
+  },
+  {
+   "id": "C04",
+   "severity": "medium",
+   "status": "CONFIRMED",
+   "title": "README references files that are not present",
+   "evidence": "missing: ['reports/PHASE2_CLEAN_REPORT.md']"
+  },
+  {
+   "id": "C06",
+   "severity": "high",
+   "status": "CONFIRMED",
+   "title": "Training-environment version drift among shipped checkpoints",
+   "evidence": "environment groups: {'torch 2.14.1+cu130 / numpy 2.4.4 / sb3 2.9.0': 'replace:42..enhance:42 (11 models)', 'torch 2.11.0+cu128 / numpy 2.5.2 / sb3 2.9.0': 'enhance:43..enhance:51 (9 models)'}; requirements.txt claims 'exact versions used to produce the shipped results' and pins: torch==2.14.1, stable-baselines3==2.9.0, gymnasium==1.4.0, numpy==2.4.4. Local environment NOT inspected here (scripts/x_01_check_env_and_checkpoints.py does that). Retraining under another torch/SB3 build is not bit-reproducible."
+  },
+  {
+   "id": "C07r",
+   "severity": "high",
+   "status": "CONFIRMED",
+   "title": "replace: validation-curve evidence (10 seeds, budget 150000 steps)",
+   "evidence": "max curve value in last 40% of training for 10/10 seeds; mean init val 0.7271 -> mean best 0.8857 (val min-hop 0.8546494540075161); seeds whose val equals the min-hop baseline EXACTLY at some checkpoint (policy collapsed onto candidate 0): {42: [15000], 43: [15000]}"
+  },
+  {
+   "id": "C07e",
+   "severity": "high",
+   "status": "CONFIRMED",
+   "title": "enhance: validation-curve evidence (10 seeds, budget 150000 steps)",
+   "evidence": "max curve value in last 40% of training for 2/10 seeds; mean init val 0.8551 -> mean best 0.8591 (val min-hop 0.8546494540075161); seeds whose val equals the min-hop baseline EXACTLY at some checkpoint (policy collapsed onto candidate 0): none; 3 seed(s) [48, 49, 51] had their UNTRAINED step-0 policy as the curve maximum, but best.zip excludes step 0 (ValCB.best starts at -1 and step 0 is never saved) -> analyze_clean's 'best' bookkeeping includes it, the saved checkpoint does not"
+  },
+  {
+   "id": "C08",
+   "severity": "medium",
+   "status": "CONFIRMED",
+   "title": "'load 1.0 calibrated to the shipped samples' holds for total offered volume only",
+   "evidence": "shipped samples: median max link utilization 0.614, 0 drops in 500 samples; simulator load 1.0 (min-hop, 100 validation scenarios): mean max utilization 0.885. 60 random pairs concentrate the same volume on fewer paths. Loads > 1 are extrapolations (no calibration evidence)."
+  },
+  {
+   "id": "C09",
+   "severity": "high",
+   "status": "OK",
+   "title": "Seed ranges disjoint: legacy train/val/test vs new val_v2 / confirmatory / poison",
+   "evidence": "validated ranges: {'train_online': [0, 1000000], 'val_calibration_v1': [10000000, 10000100], 'val_selection_v1': [10001000, 10001025], 'test_firstlook_v1': [20000000, 20000200], 'val_v2': [11000000, 11000050], 'test_confirmatory_v2': [30000000, 30000500], 'test_poison_v2': [40000000, 40000300]}"
+  },
+  {
+   "id": "C10",
+   "severity": "high",
+   "status": "INFO",
+   "title": "Existing test set is a development set",
+   "evidence": "test seeds 20000000..+199 x loads [1.0, 1.5, 2.0, 3.0] were inspected and used for planning; never reuse for tuning; confirmatory uses a fresh range."
+  },
+  {
+   "id": "C11",
+   "severity": "medium",
+   "status": "CONFIRMED",
+   "title": "Metric named 'delivery_ratio' (risk of being read as packet delivery ratio)",
+   "evidence": "occurrences: {'configs/phase2_config.json': 1, 'src/p2/sim.py': 2, 'STATUS_AND_RESUME.md': 1}. Existing CSV/column names are preserved; all NEW outputs use 'accepted_offered_ratio' (accepted/offered traffic VOLUME)."
+  },
+  {
+   "id": "C12",
+   "severity": "high",
+   "status": "CONFIRMED",
+   "title": "Baselines bypass the Telemetry channel in the existing evaluation; Telemetry has no per-episode RNG/seed hook",
+   "evidence": "eval_clean.run_baseline passes ep.true_util() directly=True; Telemetry.observe(true_util) only. Poisoned controls therefore need the new runner (src/p2x/rollout.py) with per-episode seeded telemetry (src/p2x/telemetry.py)."
+  },
+  {
+   "id": "C13",
+   "severity": "medium",
+   "status": "CONFIRMED",
+   "title": "Statistical reporting limits in analyze_clean.py",
+   "evidence": "p-values are t-tests over 10 model means only (scenario noise averaged out); scenario CI is a separate bootstrap; no combined interval; best checkpoint step taken by idxmax over a curve that includes untrained step 0; results are reported as fractions, not percentage points"
+  },
+  {
+   "id": "C14",
+   "severity": "medium",
+   "status": "UNVERIFIED",
+   "title": "data/raw checksums",
+   "evidence": "{'nsfnetbw_fork/LICENSE_fork_BSD3.txt': 'OK', 'nsfnetbw_fork/Network_nsfnetbw.ned': 'MISSING', 'nsfnetbw_fork/extracted/results_nsfnetbw_9_Routing_SP_k_1/Routing.txt': 'OK', 'nsfnetbw_fork/extracted/results_nsfnetbw_9_Routing_SP_k_1/params.ini': 'OK', 'nsfnetbw_fork/extracted/results_nsfnetbw_9_Routing_SP_k_1/simulationResults.txt': 'MISSING', 'nsfnetbw_fork/results_nsfnetbw_9_Routing_SP_k_1.tar.gz': 'MISSING'}"
+  },
+  {
+   "id": "C15",
+   "severity": "high",
+   "status": "UNVERIFIED",
+   "title": "Dataset license and identity of the NED",
+   "evidence": "Provenance file says: fork copy, not verified against the official BNN-UPC archive, dataset license NOT verified, GEANT2 unavailable. Nothing on disk can resolve this; see docs/04_PROVENANCE_ACTIONS.md."
+  },
+  {
+   "id": "C16",
+   "severity": "high",
+   "status": "UNVERIFIED",
+   "title": "Agent B checkpoint behaviour (action saturation, policy std, weight distribution, route selection)",
+   "evidence": "Checkpoints are binary and cannot be inspected statically. Run scripts/x_02_diag_checkpoints.py --agent enhance."
+  }
+ ]
+}

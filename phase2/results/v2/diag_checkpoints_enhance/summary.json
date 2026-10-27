@@ -1,0 +1,17 @@
+{
+  "agent": "enhance",
+  "n_models": 10,
+  "reference_pooled_means": {
+    "minhop": 0.861783695412414,
+    "unit_weight_dijkstra": 0.8629127644427763,
+    "shortest_feasible_k": 0.9070250047732316,
+    "shortest_feasible": 0.9054786258490563
+  },
+  "status": "EXPLORATORY",
+  "n_models_route_equal_unit_ge_threshold": 0,
+  "route_equal_threshold": 0.95,
+  "n_models_ratio_equivalent_to_unit": 0,
+  "mean_frac_components_outside_bounds": 0.0,
+  "mean_policy_std": 0.36232306659221647,
+  "reading": "If most models choose the unit-weight route (>= threshold) and are ratio-equivalent to unit-weight Dijkstra, trained Agent B is behaviourally a static min-hop router: report as a negative result and do not treat attacks on it as attacks on a learned routing policy."
+}

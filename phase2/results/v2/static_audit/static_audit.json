@@ -1,0 +1,51 @@
+[
+  {
+    "id": "C06",
+    "severity": "medium",
+    "status": "INFO",
+    "title": "Training-environment version drift among shipped checkpoints",
+    "evidence": "environment groups: {}; requirements.txt claims 'exact versions used to produce the shipped results' and pins: . Local environment NOT inspected here (scripts/x_01_check_env_and_checkpoints.py does that). Retraining under another torch/SB3 build is not bit-reproducible."
+  },
+  {
+    "id": "C09",
+    "severity": "high",
+    "status": "OK",
+    "title": "Seed ranges disjoint: legacy train/val/test vs new val_v2 / confirmatory / poison",
+    "evidence": "validated ranges: {'train_online': [0, 1000000], 'val_calibration_v1': [10000000, 10000100], 'val_selection_v1': [10001000, 10001025], 'test_firstlook_v1': [20000000, 20000200], 'val_v2': [11000000, 11000050], 'test_confirmatory_v2': [30000000, 30000500], 'test_poison_v2': [40000000, 40000300]}"
+  },
+  {
+    "id": "C11",
+    "severity": "medium",
+    "status": "OK",
+    "title": "Metric named 'delivery_ratio' (risk of being read as packet delivery ratio)",
+    "evidence": "occurrences: {}. Existing CSV/column names are preserved; all NEW outputs use 'accepted_offered_ratio' (accepted/offered traffic VOLUME)."
+  },
+  {
+    "id": "C12",
+    "severity": "high",
+    "status": "OK",
+    "title": "Baselines bypass the Telemetry channel in the existing evaluation; Telemetry has no per-episode RNG/seed hook",
+    "evidence": "eval_clean.run_baseline passes ep.true_util() directly=False; Telemetry.observe(true_util) only. Poisoned controls therefore need the new runner (src/p2x/rollout.py) with per-episode seeded telemetry (src/p2x/telemetry.py)."
+  },
+  {
+    "id": "C13",
+    "severity": "medium",
+    "status": "OK",
+    "title": "Statistical reporting limits in analyze_clean.py",
+    "evidence": "none detected"
+  },
+  {
+    "id": "C15",
+    "severity": "high",
+    "status": "UNVERIFIED",
+    "title": "Dataset license and identity of the NED",
+    "evidence": "Provenance file says: fork copy, not verified against the official BNN-UPC archive, dataset license NOT verified, GEANT2 unavailable. Nothing on disk can resolve this; see docs/04_PROVENANCE_ACTIONS.md."
+  },
+  {
+    "id": "C16",
+    "severity": "high",
+    "status": "UNVERIFIED",
+    "title": "Agent B checkpoint behaviour (action saturation, policy std, weight distribution, route selection)",
+    "evidence": "Checkpoints are binary and cannot be inspected statically. Run scripts/x_02_diag_checkpoints.py --agent enhance."
+  }
+]

@@ -1,0 +1,129 @@
+{
+  "version": "x-v1",
+  "_comment": "Single source of truth for every NEW experiment. Predeclared; freeze it (scripts/x_05_freeze.py) before any confirmatory run. Legacy config configs/phase2_config.json is unchanged.",
+
+  "legacy": {
+    "config": "configs/phase2_config.json",
+    "protected_dirs": ["results/models", "results/clean", "results/logs", "results/smoke_runs", "figures", "data", "reports"]
+  },
+  "results_root": "results/v2",
+
+  "topology": {
+    "_comment": "Hard guard: every script that builds the network verifies this hash first (value from data/PROVENANCE.md and data/raw/SHA256SUMS.txt). A stand-in/edited NED is refused, so results can never silently come from the wrong topology.",
+    "ned": "data/raw/nsfnetbw_fork/Network_nsfnetbw.ned",
+    "sha256": "fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e"
+  },
+
+  "metric": {
+    "name": "accepted_offered_ratio",
+    "legacy_name": "delivery_ratio",
+    "definition": "accepted_volume / offered_volume over one episode (flow-level admission on residual path capacity). NOT a packet delivery ratio: no packet loss, queuing, delay, jitter, flow departures or link failures are modelled."
+  },
+
+  "loads": [1.0, 1.5, 2.0, 3.0],
+  "train_load_range": [1.0, 3.0],
+
+  "seeds": {
+    "_comment": "Half-open [start, stop) scenario-seed ranges passed to p2.sim.make_scenario(seed, load). All ranges must be pairwise disjoint (validated). Scenario i uses seed start+i at every load (paired across loads).",
+    "ranges": {
+      "train_online":         [0,        1000000],
+      "val_calibration_v1":   [10000000, 10000100],
+      "val_selection_v1":     [10001000, 10001025],
+      "test_firstlook_v1":    [20000000, 20000200],
+      "val_v2":               [11000000, 11000050],
+      "test_confirmatory_v2": [30000000, 30000500],
+      "test_poison_v2":       [40000000, 40000300]
+    },
+    "legacy_ranges": ["train_online", "val_calibration_v1", "val_selection_v1", "test_firstlook_v1"],
+    "allowed_roles": {
+      "development":      ["val_v2"],
+      "confirmatory":     ["test_confirmatory_v2"],
+      "poison":           ["test_poison_v2"],
+      "integrity":        ["val_selection_v1"],
+      "legacy_reference": ["test_firstlook_v1"]
+    }
+  },
+
+  "ppo_hp": {
+    "_comment": "IDENTICAL to scripts/train_ppo.py (checked by x_00_static_audit). Only the budget and validation set change in Stage D.",
+    "n_steps": 1200, "batch_size": 300, "n_epochs": 10, "learning_rate": 0.0003,
+    "gamma": 1.0, "gae_lambda": 0.95, "clip_range": 0.2, "ent_coef": 0.0, "net_arch": [128, 128]
+  },
+
+  "diagnostics": {
+    "range": "val_v2",
+    "n_per_load": 50,
+    "legacy_models_dir": "results/models",
+    "legacy_seeds": [42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
+    "ckpts": ["best", "final"],
+    "equivalence_margin": 0.002,
+    "meaningful_gain": 0.005,
+    "b_route_equal_threshold": 0.95,
+    "integrity_n_per_load": 25,
+    "integrity_tolerance": 1e-9
+  },
+
+  "heuristic_grid": {
+    "_comment": "Transparent utilization-weight Dijkstra routed through EnhanceEnv.weights. w_e = (1/max(1-u_e, floor))^p, optionally x infeasible_multiplier if observed residual < demand; clipped to [0.1, 10]. NOT a trained model. Selected on val_v2 only (max mean accepted_offered_ratio; ties -> smaller p).",
+    "p": [0.5, 1.0, 2.0, 4.0],
+    "floor": 0.1,
+    "infeasible_multiplier": [1.0, 10.0]
+  },
+
+  "train_agent_a": {
+    "run_id": "replace_600k",
+    "max_steps": 600000,
+    "eval_every": 24000,
+    "n_val_per_load": 50,
+    "val_range": "val_v2",
+    "stopping": {
+      "_comment": "Predeclared rule. v_k = validation score at eval k (step k*eval_every). S_k = mean(v_{k-smooth+1..k}). From eval k >= min_evals stop if S_k - S_{k-window} < min_improvement. Checkpoint = argmax raw v_k (earliest on ties). Reaching the budget without the rule firing is reported as 'budget_exhausted', never as convergence.",
+      "smooth_evals": 3, "window_evals": 4, "min_evals": 12, "min_improvement": 0.002
+    },
+    "pilot_seeds": [42, 43, 44],
+    "full_seeds": [42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
+    "est_wall_s_per_seed_range": [900, 1500]
+  },
+
+  "confirmatory": {
+    "run_id": "confirmatory_v1",
+    "range": "test_confirmatory_v2",
+    "n_per_load": 500,
+    "baselines": ["minhop", "shortest_feasible", "greedy_widest", "shortest_feasible_k", "unit_weight_dijkstra", "util_weight_dijkstra"],
+    "agents": [
+      {"id": "A_legacy_150k", "agent": "replace", "models_dir": "results/models",                "seeds": [42,43,44,45,46,47,48,49,50,51], "ckpt": "best", "optional": false},
+      {"id": "A_600k",        "agent": "replace", "models_dir": "results/v2/models/replace_600k", "seeds": [42,43,44,45,46,47,48,49,50,51], "ckpt": "best", "optional": true},
+      {"id": "B_legacy_150k", "agent": "enhance", "models_dir": "results/models",                "seeds": [42,43,44,45,46,47,48,49,50,51], "ckpt": "best", "optional": false}
+    ],
+    "alpha": 0.05,
+    "bootstrap_B": 10000,
+    "bootstrap_seed": 12345,
+    "primary_family": [
+      {"id": "P1", "test": "A_600k",               "ref": "shortest_feasible",    "per_load": true},
+      {"id": "P2", "test": "A_600k",               "ref": "minhop",               "per_load": true},
+      {"id": "P3", "test": "B_legacy_150k",        "ref": "unit_weight_dijkstra", "per_load": true},
+      {"id": "P4", "test": "util_weight_dijkstra", "ref": "unit_weight_dijkstra", "per_load": true}
+    ],
+    "secondary": [
+      {"test": "A_600k", "ref": "A_legacy_150k"}, {"test": "A_600k", "ref": "shortest_feasible_k"},
+      {"test": "A_600k", "ref": "greedy_widest"}, {"test": "A_legacy_150k", "ref": "shortest_feasible_k"},
+      {"test": "A_legacy_150k", "ref": "shortest_feasible"}, {"test": "B_legacy_150k", "ref": "minhop"},
+      {"test": "util_weight_dijkstra", "ref": "shortest_feasible"}, {"test": "shortest_feasible_k", "ref": "shortest_feasible"}
+    ]
+  },
+
+  "poisoning": {
+    "_comment": "Predeclared attack matrix (Stage F). Perturbs ONLY the utilization vector observed by the policy: obs = clip(true + delta, 0, 1), |delta_e| <= eps. See docs/THREAT_MODEL.md.",
+    "range": "test_poison_v2",
+    "attacks": ["random_sign", "bias_all_plus", "bias_all_minus", "conceal_topk", "fake_topk"],
+    "k_edges": 8,
+    "targets_models": ["A_600k", "A_legacy_150k", "B_legacy_150k"],
+    "targets_baselines": ["shortest_feasible", "greedy_widest", "shortest_feasible_k", "util_weight_dijkstra", "minhop", "unit_weight_dijkstra"],
+    "presets": {
+      "smoke": {"range": "val_v2",         "role": "development", "n_per_load": 3,   "loads": [2.0],                 "eps": [0.2],           "model_seeds": [42]},
+      "pilot": {"range": "test_poison_v2", "role": "poison",      "n_per_load": 100, "loads": [2.0],                 "eps": [0.2, 0.4],      "model_seeds": [42, 43, 44]},
+      "full":  {"range": "test_poison_v2", "role": "poison",      "n_per_load": 300, "loads": [1.0, 1.5, 2.0, 3.0], "eps": [0.1, 0.2, 0.4], "model_seeds": [42,43,44,45,46,47,48,49,50,51]}
+    },
+    "primary": {"targets": ["A_600k", "B_legacy_150k"], "attacks": ["conceal_topk", "fake_topk"], "eps": 0.2, "load": 2.0, "contrast": "random_sign"}
+  }
+}

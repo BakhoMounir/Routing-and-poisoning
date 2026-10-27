@@ -1,0 +1,13 @@
+{
+  "agent": "replace",
+  "n_models": 10,
+  "reference_pooled_means": {
+    "minhop": 0.861783695412414,
+    "unit_weight_dijkstra": 0.8629127644427763,
+    "shortest_feasible_k": 0.9070250047732316,
+    "shortest_feasible": 0.9054786258490563
+  },
+  "status": "EXPLORATORY",
+  "mean_ratio_best": 0.8876280006233207,
+  "mean_frac_cand0": 0.8255416666666667
+}

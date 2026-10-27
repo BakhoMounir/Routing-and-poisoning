@@ -1,0 +1,33 @@
+{
+  "status": "EXPLORATORY - steers decisions only; confirmatory tests are P1-P4 on the fresh set",
+  "K_restriction_cost_pp": {
+    "mean": -0.15463789241753712,
+    "ci": [
+      -0.3791531724378194,
+      0.06664209260704243
+    ],
+    "reading": "inconclusive",
+    "meaning": "shortest_feasible minus shortest_feasible_k; 'positive' = restriction binding, 'equivalent' = negligible, 'inconclusive' = cannot tell"
+  },
+  "heuristic_minus_unit_pp_HELDOUT": {
+    "mean": 4.641115615004365,
+    "ci": [
+      3.774229644489238,
+      5.518490071803052
+    ],
+    "reading": "positive"
+  },
+  "heuristic_minus_shortest_feasible_pp_HELDOUT": {
+    "mean": 0.6270886218971587,
+    "ci": [
+      0.29170649971718926,
+      0.9352315167543868
+    ],
+    "non_inferior_within_meaningful_gain": true
+  },
+  "thresholds_pp": {
+    "equivalence": 0.2,
+    "meaningful": 0.5
+  },
+  "scenario_only_ci": "CIs here reflect scenario sampling only (no trained models involved)"
+}

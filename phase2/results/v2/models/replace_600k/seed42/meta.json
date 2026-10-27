@@ -1,0 +1,50 @@
+{
+  "agent": "replace",
+  "run_id": "replace_600k",
+  "train_seed": 42,
+  "max_steps": 600000,
+  "steps_trained": 312000,
+  "eval_every": 24000,
+  "stop_reason": "plateau",
+  "still_improving_at_end": false,
+  "smoothed_gain_last_window": 0.0015317388123959885,
+  "init_val": 0.8355188005054243,
+  "best_val": 0.8957820026782107,
+  "best_step": 288000,
+  "final_val": 0.8943778514382918,
+  "val_range": "val_v2",
+  "n_val_per_load": 50,
+  "hyperparameters": {
+    "_comment": "IDENTICAL to scripts/train_ppo.py (checked by x_00_static_audit). Only the budget and validation set change in Stage D.",
+    "n_steps": 1200,
+    "batch_size": 300,
+    "n_epochs": 10,
+    "learning_rate": 0.0003,
+    "gamma": 1.0,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "ent_coef": 0.0,
+    "net_arch": [
+      128,
+      128
+    ]
+  },
+  "stopping_rule": {
+    "_comment": "Predeclared rule. v_k = validation score at eval k (step k*eval_every). S_k = mean(v_{k-smooth+1..k}). From eval k >= min_evals stop if S_k - S_{k-window} < min_improvement. Checkpoint = argmax raw v_k (earliest on ties). Reaching the budget without the rule firing is reported as 'budget_exhausted', never as convergence.",
+    "smooth_evals": 3,
+    "window_evals": 4,
+    "min_evals": 12,
+    "min_improvement": 0.002
+  },
+  "resumes": 0,
+  "wall_seconds": 320.6,
+  "final_param_sha256": "d118485e00011408d92e2e7d730982d53aae5ae6daacb643c89d1cddd0b74019",
+  "config_sha256": "2c2a530d649f947b791d33c7c0de58ad9da0e138e9532ca159cf1b24e7eb34ec",
+  "versions": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu128",
+    "sb3": "2.9.0",
+    "numpy": "2.5.2"
+  },
+  "claim": "No convergence is claimed. 'plateau' = predeclared rule fired; 'budget_exhausted' = rule did not fire within max_steps."
+}
