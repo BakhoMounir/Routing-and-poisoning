@@ -6,8 +6,20 @@ from x_helpers import ROOT, load_script
 SCRIPTS = sorted(p.stem for p in (ROOT / "scripts").glob("x_0*.py"))
 
 
-def test_all_nine_scripts_present():
-    assert len(SCRIPTS) == 9, SCRIPTS
+def test_pipeline_and_plotting_scripts_present():
+    expected = {
+        "x_00_static_audit",
+        "x_01_check_env_and_checkpoints",
+        "x_02_diag_checkpoints",
+        "x_03_diag_baselines",
+        "x_04_train_agent_a",
+        "x_05_freeze",
+        "x_06_confirmatory_eval",
+        "x_07_poison_eval",
+        "x_08_analyze",
+        "x_09_plot_results",
+    }
+    assert set(SCRIPTS) == expected, SCRIPTS
 
 
 @pytest.mark.parametrize("name", SCRIPTS)
