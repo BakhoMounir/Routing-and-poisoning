@@ -1,67 +1,127 @@
-# PPO Network Routing Under Observation Poisoning — Phase 1
+# PPO Network Routing Under Observation Poisoning
 
-Reproducible research prototype that measures how falsified link-utilization telemetry affects a PPO routing agent on a small **synthetic** network. It is an independent prototype; it is **not** a reproduction of ENERO.
+A reproducible research project investigating how falsified network telemetry affects reinforcement-learning-based routing decisions and performance.
 
-* Full write-up: [`PHASE1_REPORT.md`](PHASE1_REPORT.md) · Audit of the original code: [`reports/AUDIT_REPORT.md`](reports/AUDIT_REPORT.md) · Task status: [`PHASE1_STATUS.md`](PHASE1_STATUS.md)
+This repository contains two distinct research stages:
+- **Phase 1:** A synthetic proof of concept measuring the effects of test-time observation poisoning on a PPO routing agent.
+- **Phase 2:** An NSFNET-bw-based routing benchmark evaluating PPO routing approaches against conventional baselines.
+
+This is an independent research project, not a reproduction of ENERO.
 
 ## Research question
-How does poisoning network telemetry/observations affect the routing decisions and performance of a PPO-based routing agent, and how can this effect be measured reproducibly?
 
-## Model and algorithm
-Stable-Baselines3 PPO, `MlpPolicy` (30→64→64 tanh, separate policy/value nets), 20k timesteps, trained on clean observations only. Hyperparameters are those of the original script (`n_steps=256, batch_size=64, lr=3e-4`). Baselines: static shortest-hop routing, and a diagnostic greedy policy that reads the same telemetry.
+How does inaccurate or manipulated link-utilization telemetry affect PPO-based routing decisions and network performance, and how can these effects be measured reproducibly?
 
-## Environment
-Synthetic 8-node / 13-link topology, capacity 100 per link, 20 demands per episode (volume ~U(10,35)), one demand routed per step by choosing one of its 5 shortest paths. Reward = −mean squared utilization (true loads). See `src/routing_env.py` and report §5. No real-world data.
+## Phase 1 — Synthetic observation poisoning
 
-## Poisoning mechanism
-Test-time, additive: `obs[link] = clip(obs[link] + δ, 0, 1)` for links 0 = (0,1) and 3 = (1,3). True loads and reward are untouched. Strengths δ ∈ {0, 0.10, 0.25, 0.50, 1.00}.
+Phase 1 uses a synthetic 8-node, 13-link network with capacity 100 per link and 20 demands per episode. A Stable-Baselines3 PPO agent (`MlpPolicy`, 30→64→64 tanh architecture) is trained for 20,000 timesteps using clean observations.
 
-## Experimental protocol
-10 independently trained PPO models (seeds 42–51) × 100 paired scenarios (seeds 100–199; seeds 100–119 are the original 20) × 5 strengths. Effects are paired differences per model, summarized across models (t-interval, n=10). No significance tests are claimed.
+At test time, additive perturbations are applied to the observations for links 0 = (0,1) and 3 = (1,3), with strengths δ ∈ {0, 0.10, 0.25, 0.50, 1.00}. True loads and rewards are not directly modified by the poisoning operation.
 
-## Installation
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt        # versions used to produce the results
-```
-Tested here with Python 3.13.17 on Linux/CPU in a shared interpreter (a from-scratch virtualenv install was **not** tested).
+The protocol includes 10 independently trained models (seeds 42–51), 100 paired scenarios (seeds 100–199), and conventional routing baselines.
 
-## Run
-```bash
-python -m pytest                       # 36 tests (+1 slow: RUN_SLOW=1 python -m pytest)
-python scripts/train.py                # ~30 s per model -> results/models/ppo_seed{42..51}.zip
-python scripts/run_experiment.py       # ~2 min -> results/episodes.csv, results/config.json
-python scripts/analyze.py              # tables (results/*.csv, summary_tables.md) + figures/
-python scripts/diagnose_policy.py      # results/policy_diagnostics.csv
-```
-Everything is deterministic given the seeds on the same software stack (training pinned to CPU, 1 thread).
-The shipped `results/models/*.zip` let you skip training and run the last three commands directly.
+The results show that stronger perturbations increase the proportion of changed routing decisions, while utilization effects remain relatively small on average and vary substantially between models. The environment is simplified and does not model realistic packet loss.
 
-## Layout
-```
-originals/   unmodified supplied files + SHA256SUMS.txt   (ppo_routing.zip was NOT supplied)
-audit/       re-execution of the ORIGINAL scripts (retrained model, rerun CSVs, console summary)
-src/         environment and reference policies
-scripts/     train / run_experiment / analyze / diagnose_policy
-tests/       pytest suite
-results/     episodes.csv (6,000 episodes), config.json, summaries, models, logs
-figures/     fig1–fig4 (PNG)
-reports/     AUDIT_REPORT.md
-```
-Original results = `originals/*.csv`. New results = everything under `results/` and `figures/`. The two are never mixed in the same file.
+### Phase 1 results
 
-## Current results (new; details and uncertainty in the report)
-| | max util | mean util |
-|---|---|---|
+| Method | Maximum utilization | Mean utilization |
+|---|---:|---:|
 | Shortest path | 1.5335 | 0.6096 |
-| PPO clean (mean of 10 models) | 1.4825 | 0.6483 |
-| PPO δ=0.25 | 1.4838 | 0.6542 |
-| PPO δ=1.00 | 1.5078 | 0.6773 |
+| PPO clean, mean of 10 models | 1.4825 | 0.6483 |
+| PPO, δ = 0.25 | 1.4838 | 0.6542 |
+| PPO, δ = 1.00 | 1.5078 | 0.6773 |
 
-Poisoning raises the share of changed decisions with δ (mean 1.4% at δ=0.1 → 13.8% at δ=1) but the mean effect on utilization is small and varies strongly between trained models. The original numbers (PPO 1.5082/0.6550; shortest path 1.5040/0.6237; poisoned 1.5082/0.6557) are confirmed to be in the supplied CSVs, but the PPO ones could not be regenerated (original model missing).
+These figures are the reported Phase 1 results; consult the full report for uncertainty, methodology, and interpretation. The original PPO results could not be regenerated because the original model was missing.
 
-## Limitations
-Toy topology; saturated regime (98% of episodes overload a link; no loss model); one non-adaptive attack on two links; 10 models; weak 20k-step agents; no defence; no ENERO comparison. See report §11.
+### Phase 1 documentation
+
+- [Full report](PHASE1_REPORT.md)
+- [Task status](PHASE1_STATUS.md)
+- [Original-code audit](reports/AUDIT_REPORT.md)
+
+### Phase 1 commands
+
+```bash
+python -m pytest
+python scripts/train.py
+python scripts/run_experiment.py
+python scripts/analyze.py
+python scripts/diagnose_policy.py
+```
+
+Install dependencies from `requirements.txt` in the Phase 1 environment before running these commands. Existing trained models can be used to skip training when available.
+
+## Phase 2 — NSFNET-bw routing benchmark
+
+Phase 2 extends the investigation to a 14-node, 21-duplex-link NSFNET-bw-based topology with synthetic traffic scenarios at multiple offered loads.
+
+The benchmark includes two PPO approaches:
+
+- **Agent A:** PPO-based path selection.
+- **Agent B:** PPO-based link-weight selection followed by Dijkstra routing.
+
+Conventional baselines are included for comparison, including minimum-hop and shortest-feasible routing where supported by the evaluation artifacts.
+
+### Current findings and limitations
+
+The available diagnostics do not establish that both PPO approaches learn effective routing policies. Agent A's earlier training run had not converged, while Agent B showed little evidence of learning in the reported diagnostics. The evidence does not justify claiming that PPO consistently outperforms the strongest conventional baseline.
+
+Dataset provenance and licensing still require verification.
+
+### Phase 2 status
+
+The `phase2/` directory contains the benchmark code, scripts, tests, and available results. Three diagnostic figures can be regenerated as PNG and PDF files:
+
+- `phase2/figures/fig1_agent_a_training_curves`
+- `phase2/figures/fig2_baseline_diagnostics`
+- `phase2/figures/fig3_checkpoint_diagnostics`
+
+These figures visualize existing artifacts. They are not independent confirmatory results.
+
+**Telemetry-poisoning experiments have not been completed.** The presence of an evaluation script does not demonstrate that an experiment has been executed or validated. Confirmatory evaluation status must be verified from actual output artifacts and records.
+
+### Phase 2 commands
+
+From the repository root, with Phase 2 dependencies installed:
+
+```bash
+python -m pytest phase2/tests -q
+python phase2/scripts/x_09_plot_results.py
+```
+
+The plotting script uses existing results; it does not train models or run new experiments. Inspect script options and default behavior before starting computationally expensive tasks.
+
+## Repository layout
+
+```text
+README.md                    Combined project overview
+PHASE1_REPORT.md             Phase 1 research report
+PHASE1_STATUS.md             Phase 1 task status
+reports/                     Phase 1 audit report
+src/                         Phase 1 source code
+scripts/                     Phase 1 experiment scripts
+tests/                       Phase 1 tests
+results/                     Phase 1 results and models
+figures/                     Phase 1 figures
+phase2/                      Phase 2 benchmark and tooling
+phase2/scripts/              Phase 2 experiment and analysis scripts
+phase2/tests/                Phase 2 tests
+phase2/figures/              Phase 2 diagnostic figures and documentation
+```
+
+## Reproducibility and interpretation
+
+Results depend on software versions, random seeds, topology, traffic generation, training procedures, and evaluation protocols. Keep the two phases' code, dependencies, metrics, and result files separate unless a consistent comparison methodology is established.
+
+The Phase 2 accepted/offered ratio measures accepted traffic volume relative to offered traffic volume; it is not a packet delivery ratio.
+
+Do not claim that a defence is effective without completed and validated attack-and-defence experiments. Distinguish exploratory diagnostics from independent confirmatory results.
 
 ## Future work
-Feasible/realistic benchmark first, stronger adaptive attacks, more seeds and unseen topologies, then defences. See report §13.
+
+1. Verify Phase 2 dataset provenance and licensing.
+2. Verify the confirmatory clean-stage evaluation against its actual artifacts.
+3. Establish adequate training and conventional-baseline comparisons.
+4. Run and validate the planned telemetry-poisoning experiments.
+5. Evaluate potential defences under a documented experimental protocol.
+6. Report uncertainty, limitations, and deviations from the planned methodology.
