@@ -7,3 +7,24 @@ Nothing in the supplied files can settle identity or license. Suggested actions:
 3. Until resolved: do not publish `data/raw`; describe the topology as "NSFNET-bw as distributed with RouteNet-style datasets (identity unverified)"; describe traffic as synthetic and total-volume-calibrated (see audit item 7).
 4. If a derived edge list is to be published, decide that with the license in hand.
 The new scripts refuse to run unless the NED hash equals the recorded one, so a swapped file cannot silently change results. If you legitimately replace the NED with the verified official one, update `topology.sha256` deliberately (and treat all earlier results as a different topology).
+
+## Confirmatory evaluation artifact audit
+
+The later clean-stage confirmatory run is recorded under
+`results/v2/confirmatory_v1/` in the external handover directory. Its final
+artifact audit reported 35 checks passed and 0 failed. The evaluation manifest
+records 72,000 episode rows, a completed status, and `git: null`.
+
+The audit verifies the recorded freeze/configuration relationship, episode
+CSV hash, episode-level invariants, scenario coverage, and analysis-output
+hashes. This is an artifact-integrity and consistency result, not a resolution
+of dataset identity, licensing, or redistribution rights.
+
+The episode CSV SHA-256 is
+`e5257ccfa3e8b56661f35833fc894ee9b0bda06c2adf79f25552d442d7f83b73`.
+The frozen configuration SHA-256 is
+`2c2a530d649f947b791d33c7c0de58ad9da0e138e9532ca159cf1b24e7eb34ec`.
+
+Do not publish the raw dataset while its rights remain unresolved. Keep the
+evaluation outputs identified as external handover artifacts unless and until
+they are deliberately added to a versioned, documented release.
