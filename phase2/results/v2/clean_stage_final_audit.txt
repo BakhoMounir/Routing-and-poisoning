@@ -1,0 +1,28 @@
+Phase 2 clean-stage final audit
+Generated: 2026-10-29T00:49:28+03:00
+
+Git branch: phase2-final-audit-record
+Current commit before this report: 8e1de36
+Test result: FAIL (see test output in log)
+
+Frozen topology:
+Path: phase2/data/raw/nsfnetbw_fork/Network_nsfnetbw.ned
+SHA256: fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e
+Expected SHA256: fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e
+Verification: PASS
+
+Frozen confirmatory results:
+Path: phase2/results/v2/confirmatory_v1/episodes.csv
+SHA256: e5257ccfa3e8b56661f35833fc894ee9b0bda06c2adf79f25552d442d7f83b73
+Expected SHA256: e5257ccfa3e8b56661f35833fc894ee9b0bda06c2adf79f25552d442d7f83b73
+Verification: PASS
+Rows including header: 72001
+
+Scope and limitations:
+- This script verified artifact identity; it did not independently validate every scientific result.
+- Tests were run without launching training or poisoning experiments.
+- NSFNET-bw dataset provenance and redistribution/licensing terms remain unresolved.
+- Do not represent reconstructed or newly generated results as original results.
+- Clean-baseline results require scientific review before proceeding to poisoning experiments.
+- GEANT2 availability has not been established by this script.
+- This report does not claim the project is publication-ready.
