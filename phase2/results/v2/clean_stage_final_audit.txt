@@ -1,28 +1,27 @@
-Phase 2 clean-stage final audit
-Generated: 2026-10-29T00:49:28+03:00
+PHASE 2 FINAL REPRODUCIBILITY AUDIT
+Generated: 2026-10-29T00:58:46+03:00
 
-Git branch: phase2-final-audit-record
-Current commit before this report: 8e1de36
-Test result: PASS — 74 tests passed in 12.95 seconds using PYTHONPATH=phase2/src.
+Project: Routing-and-poisoning, Phase 2
+Confirmatory evaluation: existing frozen run; not rerun by this audit.
+Manifest: /media/bakhom/New Volume/Research/RL_Sec/practical/files/routing-poisoning-phase2-handover/results/v2/confirmatory_v1/manifest.json
+Frozen config SHA-256: 2c2a530d649f947b791d33c7c0de58ad9da0e138e9532ca159cf1b24e7eb34ec
+Episode CSV SHA-256: e5257ccfa3e8b56661f35833fc894ee9b0bda06c2adf79f25552d442d7f83b73
+Topology SHA-256: fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e
+Test suite: PASS
 
-Frozen topology:
-Path: phase2/data/raw/nsfnetbw_fork/Network_nsfnetbw.ned
-SHA256: fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e
-Expected SHA256: fe497b0bce187d1b7fe454e92c8778357dfa21ef2587878723d7d43d52824e7e
-Verification: PASS
+Integrity checks:
+- Configuration hash matched the recorded expected hash.
+- Episode CSV hash matched the recorded expected hash.
+- Topology hash matched the recorded expected hash.
+- Manifest row count was checked against the CSV.
+- Existing statistical outputs were checked for presence.
 
-Frozen confirmatory results:
-Path: phase2/results/v2/confirmatory_v1/episodes.csv
-SHA256: e5257ccfa3e8b56661f35833fc894ee9b0bda06c2adf79f25552d442d7f83b73
-Expected SHA256: e5257ccfa3e8b56661f35833fc894ee9b0bda06c2adf79f25552d442d7f83b73
-Verification: PASS
-Rows including header: 72001
+Important limitations:
+- The original manifest records different PyTorch builds across some trained checkpoints.
+- The current core-code hash must be verified using the exact original freeze-script algorithm; a manually assembled hash is not sufficient.
+- Presence of statistical outputs does not itself validate their methodology or conclusions.
+- Dataset provenance and redistribution/license terms remain unresolved.
+- Scientific review of the clean benchmark remains necessary before proceeding to poisoning experiments.
+- No model training or poisoning experiments were started by this audit.
 
-Scope and limitations:
-- This script verified artifact identity; it did not independently validate every scientific result.
-- Tests were run without launching training or poisoning experiments.
-- NSFNET-bw dataset provenance and redistribution/licensing terms remain unresolved.
-- Do not represent reconstructed or newly generated results as original results.
-- Clean-baseline results require scientific review before proceeding to poisoning experiments.
-- GEANT2 availability has not been established by this script.
-- This report does not claim the project is publication-ready.
+Test status: PASS
